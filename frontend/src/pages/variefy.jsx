@@ -19,9 +19,7 @@ const variefy = () => {
       const response = await axios.post(
         backendUrl + "/api/order/variefyStripe",
         { success, orderId },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { headers: { token } }
       );
       if (response.data.success) {
         setCartItems({});
