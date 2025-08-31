@@ -37,8 +37,8 @@ const ShopContextProvider = (props) => {
           backendUrl + "/api/cart/add",
           { itemId, size },
           {
-    headers: { Authorization: `Bearer ${token}` } // ✅ Correct
-  }
+            headers: { Authorization: `Bearer ${token}` }, // ✅ Correct
+          }
         );
       } catch (error) {
         console.log(error);
@@ -46,6 +46,23 @@ const ShopContextProvider = (props) => {
       }
     }
   };
+
+  const clearCart = async () => {
+  setCartItems({}); // 🔥 reset frontend cart immediately
+  if (token) {
+    try {
+      await axios.post(
+        backendUrl + "/api/cart/clear",  // you'll need to make this backend route
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  }
+};
+
 
   const getCartCount = () => {
     let totalCount = 0;
@@ -74,8 +91,8 @@ const ShopContextProvider = (props) => {
           backendUrl + "/api/cart/update",
           { itemId, size, quantity },
           {
-    headers: { Authorization: `Bearer ${token}` } // ✅ Correct
-  }
+            headers: { Authorization: `Bearer ${token}` }, // ✅ Correct
+          }
         );
       } catch (error) {
         console.log(error);
@@ -121,7 +138,7 @@ const ShopContextProvider = (props) => {
         {
           headers: { Authorization: `Bearer ${token}` },
         }
-      ); 
+      );
       if (response.data.success) {
         setCartItems(response.data.cartData);
       }
@@ -160,6 +177,7 @@ const ShopContextProvider = (props) => {
     backendUrl,
     setToken,
     token,
+    clearCart
   };
 
   return (
