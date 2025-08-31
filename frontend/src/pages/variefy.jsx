@@ -5,49 +5,43 @@ import { toast } from "react-toastify";
 import { useSearchParams } from "react-router-dom"; // ✅ use this for query params
 
 const Variefy = () => {
-  const { navigate, token, setCartItems, backendUrl } = useContext(ShopContext);
+  const { token, setCartItems, backendUrl } = useContext(ShopContext);
   const [searchParams] = useSearchParams();
-
-  const success = searchParams.get("success");
-  const orderId = searchParams.get("orderId");
-
-  const variefyPayment = async () => {
-    try {
-      if (!token) return;
-
-      const response = await axios.post(
-        backendUrl + "/api/order/variefyStripe",
-        { success, orderId },
-        {
-          headers: { Authorization: `Bearer ${token}` }, // ✅ fixed header
-        }
-      );
-
-      if (response.data.success) {
-        // ✅ Clear cart
-        setCartItems({});
-
-        // ✅ Success popup
-        toast.success("Payment successful! 🎉");
-
-        // ✅ Redirect to home
-        navigate("/");
-      } else {
-        toast.error("Payment failed. Try again.");
-        navigate("/cart");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Something went wrong. Try again.");
-      navigate("/cart");
-    }
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
-    variefyPayment();
+    const verifyPayment = async () => {
+      try {
+        if (!token) return;
+
+        const success = searchParams.get("success");
+        const orderId = searchParams.get("orderId");
+
+        const res = await axios.post(
+          backendUrl + "/api/order/variefyStripe",
+          { success, orderId },
+          { headers: { token } }
+        );
+
+        if (res.data.success) {
+          setCartItems({});
+          toast.success("Payment successful!");
+          navigate("/");
+        } else {
+          toast.error("Payment failed");
+          navigate("/cart");
+        }
+      } catch (err) {
+        console.error(err);
+        toast.error("Error verifying payment");
+        navigate("/cart");
+      }
+    };
+
+    verifyPayment();
   }, [token]);
 
-  return <div></div>;
+  return null;
 };
 
 export default Variefy;
