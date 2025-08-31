@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { useSearchParams } from "react-router-dom"; // ✅ use this for query params
 
 const Variefy = () => {
-  const { token, setCartItems, backendUrl } = useContext(ShopContext);
+const { token, setCartItems, backendUrl } = useContext(ShopContext);
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -19,12 +19,14 @@ const Variefy = () => {
 
         const res = await axios.post(
           backendUrl + "/api/order/variefyStripe",
-          { success, orderId },
-          { headers: { token } }
+          { success, orderId, userId: JSON.parse(localStorage.getItem("userId")) },
+          { headers: { Authorization: `Bearer ${token}` } }
         );
 
         if (res.data.success) {
+          // ✅ Clear cart in frontend
           setCartItems({});
+          localStorage.removeItem("cartItems"); // optional, if you persist cart
           toast.success("Payment successful!");
           navigate("/");
         } else {
@@ -43,5 +45,4 @@ const Variefy = () => {
 
   return null;
 };
-
 export default Variefy;
