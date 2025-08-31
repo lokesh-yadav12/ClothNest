@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken'
 
 
 const createToken = (id) =>{
-    return jwt.sign({id},process.env.jWT_SECRET)
+    return jwt.sign({id},process.env.JWT_SECRET)
 }
 
 
@@ -102,6 +102,7 @@ const adminLogin = async (req,res)=>{
         res.json({success:false,message:error.message})
     }
 }
+
 
 
 
