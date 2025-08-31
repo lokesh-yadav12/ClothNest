@@ -19,28 +19,29 @@ const Navbar = () => {
 
   return (
     <div className="flex items-center justify-between py-5 font-medium">
-      <Link to='/'><img src={assets.logo} alt="" className="w-36" /></Link>
-      <ul className="hidden sm:flex gap-5 text-sm text-gray-700">
-        <NavLink to="/" className="flex flex-col items-center gap-1">
-          <p>HOME</p>
-          <hr className="w-2/4  h-[1.5px] border-gray-700 hidden" />
-        </NavLink>
-        <NavLink to="/collection" className="flex flex-col items-center gap-1">
-          <p>COLLECTION</p>
-          <hr className="w-2/4  h-[1.5px] border-gray-700 hidden" />
-        </NavLink>
-        
-        <NavLink to="/about" className="flex flex-col items-center gap-1 ">
-          <p>ABOUT</p>
-          <hr className="w-2/4  h-[1.5px] border-gray-700 hidden" />
-        </NavLink>
-        <NavLink to="/contact" className="flex flex-col items-center gap-1 ">
-          <p>CONTACT</p>
-          <hr className="w-2/4  h-[1.5px] border-gray-700 hidden" />
-        </NavLink>
-      </ul>
-
-
+      <Link to="/" className="text-2xl font-bold tracking-wide text-gray-800">
+    <span className="text-black">Cloth</span>
+    <span className="text-indigo-600">Nest</span>
+  </Link>
+  
+  <ul className="hidden sm:flex gap-5 text-sm text-gray-700">
+    <NavLink to="/" className="flex flex-col items-center gap-1">
+      <p>HOME</p>
+      <hr className="w-2/4 h-[1.5px] border-gray-700 hidden" />
+    </NavLink>
+    <NavLink to="/collection" className="flex flex-col items-center gap-1">
+      <p>COLLECTION</p>
+      <hr className="w-2/4 h-[1.5px] border-gray-700 hidden" />
+    </NavLink>
+    <NavLink to="/about" className="flex flex-col items-center gap-1">
+      <p>ABOUT</p>
+      <hr className="w-2/4 h-[1.5px] border-gray-700 hidden" />
+    </NavLink>
+    <NavLink to="/contact" className="flex flex-col items-center gap-1">
+      <p>CONTACT</p>
+      <hr className="w-2/4 h-[1.5px] border-gray-700 hidden" />
+    </NavLink>
+  </ul>
       <div className="flex items-center gap-5 sm:gap-6">
         <img onClick={()=>setShowSearch(true)} src={assets.search_icon} alt="" className="w-5 cursor-pointer" />
         
@@ -89,3 +90,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
