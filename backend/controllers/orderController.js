@@ -88,11 +88,12 @@ const placeOrderStripe = async(req,res) =>{
         })
 
         const session = await stripe.checkout.sessions.create({
-            success_url:`${origin}/variefy?success=true&orderId=${newOrder._id}`,
-            cancel_url:`${origin}/variefy?success=false&orderId=${newOrder._id}`,
-            line_items,
-            mode:'payment',
-        })
+  success_url: `${origin}/variefy?success=true&orderId=${newOrder._id}`,
+  cancel_url: `${origin}/variefy?success=false&orderId=${newOrder._id}`,
+  line_items,
+  mode: "payment",
+});
+
         res.json({success:true,session_url:session.url});
 
 
@@ -102,25 +103,23 @@ const placeOrderStripe = async(req,res) =>{
     }
 }
 //variefy stripe
-const variefyStripe = async(req,res) =>{
-    const {orderId,success,userId}=req.body
-    try {
-        if(success==="true"){
-            await orderModel.findByIdAndUpdate(orderId,{payment:true})
-            await userId.findByIdAndUpdate(userId,{cartData:{}})
-            res.json({success:true});
-            
-        }
-        else{
-            await orderModel.findByIdAndDelete(orderId)
-            res.json({success:false})
-        }
-    } catch (error) {
-        
-        console.log(error)
-        res.json({success:false,message:error.message})
+const variefyStripe = async (req, res) => {
+  const { orderId, success, userId } = req.body;
+  try {
+    if (success === "true") {
+      await orderModel.findByIdAndUpdate(orderId, { payment: true });
+      await userModel.findByIdAndUpdate(userId, { cartData: {} });
+      res.json({ success: true });
+    } else {
+      await orderModel.findByIdAndDelete(orderId);
+      res.json({ success: false });
     }
-}
+  } catch (error) {
+    console.log(error);
+    res.json({ success: false, message: error.message });
+  }
+};
+
 
 
 
