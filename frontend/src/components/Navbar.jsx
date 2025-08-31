@@ -19,9 +19,9 @@ const Navbar = () => {
 
   return (
     <div className="flex items-center justify-between py-5 font-medium">
-      <Link to="/" className="text-2xl font-bold tracking-wide text-gray-800">
-    <span className="text-black">Cloth</span>
-    <span className="text-indigo-600">Nest</span>
+    <Link to="/" className="text-3xl font-bold tracking-wide text-gray-800">
+    <span className="text-gray-400">Cloth</span>
+    <span className="text-gray-800">Nest</span>
   </Link>
   
   <ul className="hidden sm:flex gap-5 text-sm text-gray-700">
@@ -90,4 +90,5 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
 
