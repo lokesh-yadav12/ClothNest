@@ -1,35 +1,45 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { ShopContext } from "../context/ShopContext";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom"; // ✅ use this for query params
 
-const variefy = () => {
+const Variefy = () => {
   const { navigate, token, setCartItems, backendUrl } = useContext(ShopContext);
-  const [searchParams, setSearchParams] = useState();
+  const [searchParams] = useSearchParams();
+
   const success = searchParams.get("success");
   const orderId = searchParams.get("orderId");
 
   const variefyPayment = async () => {
     try {
-      if (!token) {
-        return null;
-      }
+      if (!token) return;
 
       const response = await axios.post(
         backendUrl + "/api/order/variefyStripe",
         { success, orderId },
-        { headers: { token } }
+        {
+          headers: { Authorization: `Bearer ${token}` }, // ✅ fixed header
+        }
       );
+
       if (response.data.success) {
+        // ✅ Clear cart
         setCartItems({});
-        navigate("/orders");
+
+        // ✅ Success popup
+        toast.success("Payment successful! 🎉");
+
+        // ✅ Redirect to home
+        navigate("/");
       } else {
+        toast.error("Payment failed. Try again.");
         navigate("/cart");
       }
     } catch (error) {
-      console.log(error);
-      toast.error(error.message);
+      console.error(error);
+      toast.error("Something went wrong. Try again.");
+      navigate("/cart");
     }
   };
 
@@ -40,4 +50,4 @@ const variefy = () => {
   return <div></div>;
 };
 
-export default variefy;
+export default Variefy;
