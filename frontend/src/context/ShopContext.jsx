@@ -25,7 +25,7 @@ const ShopContextProvider = (props) => {
     let cartData = JSON.parse(JSON.stringify(cartItems)); // Fix: structuredClone not supported in all browsers
 
     if (cartData[itemId]) {
-      cartData[itemId][size] = (cartData[itemId][size]) + 1;
+      cartData[itemId][size] = cartData[itemId][size] + 1;
     } else {
       cartData[itemId] = { [size]: 1 };
     }
@@ -33,7 +33,13 @@ const ShopContextProvider = (props) => {
 
     if (token) {
       try {
-        await axios.post(backendUrl + "/api/cart/add", { itemId, size }, { headers: { token } });
+        await axios.post(
+          backendUrl + "/api/cart/add",
+          { itemId, size },
+          {
+    headers: { Authorization: `Bearer ${token}` } // ✅ Correct
+  }
+        );
       } catch (error) {
         console.log(error);
         toast.error(error.message);
@@ -58,14 +64,19 @@ const ShopContextProvider = (props) => {
   }, [cartItems]);
 
   const updateQuantity = async (itemId, size, quantity) => {
-
     let cartData = JSON.parse(JSON.stringify(cartItems)); // Fix: structuredClone replaced
     cartData[itemId][size] = quantity;
     setCartItems(cartData);
 
     if (token) {
       try {
-        await axios.post(backendUrl + "/api/cart/update", { itemId, size, quantity }, { headers: { token } });
+        await axios.post(
+          backendUrl + "/api/cart/update",
+          { itemId, size, quantity },
+          {
+    headers: { Authorization: `Bearer ${token}` } // ✅ Correct
+  }
+        );
       } catch (error) {
         console.log(error);
         toast.error(error.message);
@@ -91,7 +102,7 @@ const ShopContextProvider = (props) => {
   const getProductsData = async () => {
     try {
       const response = await axios.get(backendUrl + "/api/product/list");
-      if (response.data.success)   {
+      if (response.data.success) {
         setProducts(response.data.products);
       } else {
         toast.error(response.data.message);
@@ -104,7 +115,13 @@ const ShopContextProvider = (props) => {
 
   const getUserCart = async (token) => {
     try {
-      const response = await axios.post(backendUrl + "/api/cart/get",{}, { headers: { token } }); // Fix: changed `post` to `get`
+      const response = await axios.post(
+        backendUrl + "/api/cart/get",
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      ); 
       if (response.data.success) {
         setCartItems(response.data.cartData);
       }
@@ -119,8 +136,8 @@ const ShopContextProvider = (props) => {
   }, []);
 
   useEffect(() => {
-    if (!token && localStorage.getItem('token')) {
-      setToken(localStorage.getItem('token'));
+    if (!token && localStorage.getItem("token")) {
+      setToken(localStorage.getItem("token"));
       getUserCart(localStorage.getItem("token"));
     }
   }, []); // Fix: Added token as a dependency
@@ -143,11 +160,11 @@ const ShopContextProvider = (props) => {
     backendUrl,
     setToken,
     token,
-    
   };
 
-  return <ShopContext.Provider value={value}>{props.children}</ShopContext.Provider>;
+  return (
+    <ShopContext.Provider value={value}>{props.children}</ShopContext.Provider>
+  );
 };
 
 export default ShopContextProvider;
- 
