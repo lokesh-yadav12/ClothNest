@@ -4,7 +4,7 @@ const MyProfile = () => {
   // Hardcoded data (replace later with backend data)
   const user = {
     name: "Lokesh Kumar",
-    email: "lokesh@example.com",
+    email: "lokesh916635@gmail.com",
     role: "Customer",
     createdAt: "2025-01-01T10:30:00Z",
   };
@@ -41,3 +41,4 @@ const MyProfile = () => {
 };
 
 export default MyProfile;
+
