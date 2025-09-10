@@ -82,7 +82,7 @@ const Login = () => {
       <button
         type="button"
         onClick={handleAdminRedirect}
-        className="bg-red-300 text-white font-light px-8 py-2 mt-2"
+        className="bg-black text-white font-light px-8 py-2 mt-2"
       >
         Login as Admin
       </button>
@@ -91,3 +91,4 @@ const Login = () => {
 };
 
 export default Login;
+
